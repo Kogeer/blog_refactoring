@@ -1,0 +1,46 @@
+{
+  "name": "blog_refactoring",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Refactoring the original blog project",
+  "main": "blogsrv.js",
+  "scripts": {
+    "test": "jest",
+    "start": "nodemon --experimental-modules blogsrv.js"
+  },
+  "jest": {
+    "//": "Set jest to verbose and show in console every test describing, create coverage after tests",
+    "verbose": true,
+    "coverageReporters" : [
+      "text",
+      "html"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kogeer/blog_refactoring.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Kogeer/blog_refactoring/issues"
+  },
+  "homepage": "https://github.com/Kogeer/blog_refactoring#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "bootstrap": "^4.4.1",
+    "express": "^4.17.1",
+    "express-handlebars": "^4.0.3",
+    "handlebars": "^4.7.6",
+    "jquery": "^3.4.1",
+    "popper.js": "^1.16.1",
+    "sqlite3": "^4.1.1"
+  },
+  "devDependencies": {
+    "@babel/plugin-transform-modules-commonjs": "^7.9.0",
+    "babel-jest": "^25.3.0",
+    "jest": "^25.3.0",
+    "nodemon": "^2.0.3"
+  }
+}

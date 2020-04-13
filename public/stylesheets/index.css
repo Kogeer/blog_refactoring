@@ -1,0 +1,20 @@
+.jumbotron {
+    background-color: #3498db;
+    height: 350px;
+    font-family: 'Raleway', sans-serif;
+    font-weight: bold;
+    font-style: italic;
+}
+
+#pagetitle { 
+    font-size: 90px;
+}
+
+body {
+    background-color: #f7f4ed;
+}
+
+#mainnav {
+    background-color: #00BCD4;
+    display: block;
+}
