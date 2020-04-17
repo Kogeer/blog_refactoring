@@ -1,0 +1,14 @@
+#logincontainer {
+    width: 400px;
+}
+
+#loginbutton {
+    width: 100px;
+}
+
+#username,
+#password {
+    background-color: #f2f2f2;
+    border: 0;
+    padding: 5px;
+}

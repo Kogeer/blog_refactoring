@@ -1,0 +1,11 @@
+<div class="container text-center h-100 shadow-lg p-3 mb-3 bg-white rounded" id="logincontainer">
+    <img src="https://cdn2.iconfinder.com/data/icons/green-2/32/expand-color-web2-23-512.png" width="128" height="128" class="mb-3">
+    <form method="POST" action="/login">
+    <span>Username:</span> <div><input type="text" name="username" placeholder="Username..." id="username"></div><br>
+    <span>Password:</span> <div><input type="password" name="password" placeholder="Password..." id="password"></div>
+    <input id="loginbutton" class="mt-4 btn btn-primary" type="submit" value="Login">
+    </form>
+    <div class="text-warning">{{#if error}}Error: Invalid credentials {{/if}}</div>
+</div>
+
+<link rel="stylesheet" type="text/css" href="/stylesheets/login.css">

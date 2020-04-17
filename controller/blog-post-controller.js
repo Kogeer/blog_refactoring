@@ -5,7 +5,7 @@ export default class BlogPostController {
         this.blogPostService = blogPostService
     }
 
-    showPosts(req,res) {
+    indexPage(req,res) {
         const postsOnIndex = this.blogPostService.getPosts();
         res.render('index', {
             blogHeaderTitle : 'KoGe Blog Project',
