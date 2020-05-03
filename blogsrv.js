@@ -41,6 +41,9 @@ app.get('/logout', userLoginController.logout.bind(userLoginController));
 app.get('/newpost', cookieAuthentication, blogPostController.newPostPage);
 app.post('/newpost', cookieAuthentication, blogPostController.createNewPost.bind(blogPostController));
 app.get('/posts/:id', blogPostController.readPost.bind(blogPostController));
+app.get('/admin-posts-list', cookieAuthentication, blogPostController.adminPostsList.bind(blogPostController));
+app.get('/editpost/:id', cookieAuthentication, blogPostController.getEditPost.bind(blogPostController));
+app.post('/editpost/:id', cookieAuthentication, blogPostController.updatePost.bind(blogPostController));
 
 app.listen(port, () => {
     blogPostRepository.createDatabase();

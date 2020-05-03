@@ -23,7 +23,7 @@ export default class BlogPostController {
         const { title, slug, content } = req.body;
         const { user } = req.session;
         const missInputs = {};
-        const validSlug = slug.replace(/\s/, '-')
+        const validSlug = slug.split(' ').join('-');
 
         if (!title) {
             missInputs.title = 'Title is required'
@@ -32,7 +32,6 @@ export default class BlogPostController {
             missInputs.content = 'Content is required'
         }
         if (!slug) {
-            console.log('Miss')
             missInputs.slug = 'Slug is required'
         }
         if (validSlug && !validSlug.match(/^[0-9a-z.\-]+$/)) {
@@ -66,5 +65,60 @@ export default class BlogPostController {
             blogHeaderTitle: 'KoGe Blog Project',
             post
         })
+    }
+
+    async adminPostsList(req,res) {
+        const postsOnAdmin = await this.blogPostService.getPosts();
+        res.render('adminpostslist', {
+            blogHeaderTitle: 'KoGe Blog Project',
+            posts: postsOnAdmin
+        })
+    }
+
+    async getEditPost(req,res) {
+        const {id} = req.params;
+        const post = await this.blogPostService.readPost(id);
+        if(!post) {
+            res.redirect('/');
+            return;
+        }
+
+        res.render('editpost', {
+            blogHeaderTitle: 'KoGe Blog Project',
+            post
+        })
+    }
+
+    async updatePost(req,res) {
+        const { title, slug, content } = req.body;
+        const {id} = req.params;
+        const { user } = req.session;
+        const missInputs = {};
+        const validSlug = slug.replace(/\s/, '-')
+
+        if (!title) {
+            missInputs.title = 'Title is required'
+        }
+        if (!content) {
+            missInputs.content = 'Content is required'
+        }
+        if (!slug) {
+            missInputs.slug = 'Slug is required'
+        }
+        if (validSlug && !validSlug.match(/^[0-9a-z.\-]+$/)) {
+            missInputs.slug = 'Invalid slug, only alphanumeric characters without accents!'
+        }
+
+        if (Object.keys(missInputs).length) {
+            res.render('editpost', {
+                blogHeaderTitle: 'KoGe Blog Project',
+                error: missInputs
+            })
+            return;
+        }
+
+        this.blogPostService.updatePost(id, user, title, validSlug, content);
+
+        res.redirect('/admin');
     }
 }

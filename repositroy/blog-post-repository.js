@@ -43,7 +43,6 @@ export default class BlogPostRepository {
                     }
 
                     if (post !== undefined) {
-                        console.log(post)
                         const blogPost = new BlogPost(post.id, post.author, post.created_at, post.title, post.slug, post.content)
                         resolve(blogPost);
                     }
@@ -63,14 +62,19 @@ export default class BlogPostRepository {
                     }
 
                     if (post !== undefined) {
-                        console.log(post)
                         const blogPost = new BlogPost(post.id, post.author, post.created_at, post.title, post.slug, post.content)
                         resolve(blogPost);
                     }
-
+                    
                     reject(new Error('No post with slug'))
                 })
             })
+        })
+    }
+
+    updatePost(post) {
+        db.serialize(function() {
+            db.run("UPDATE posts SET title = ?, slug = ?, content = ? WHERE id = ?",[post.title,post.slug,post.content,post.id])
         })
     }
 

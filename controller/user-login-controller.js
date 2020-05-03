@@ -39,6 +39,6 @@ export default class UserLoginController {
         const userSession = req.cookies.user
         this.sessionService.deleteSession(userSession)
         res.clearCookie(this.sessionService.AUTH_COOKIE)
-        res.redirect('login')
+        res.redirect('/login')
     }
 }

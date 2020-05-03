@@ -1,0 +1,26 @@
+<div class="w-50 m-auto">
+    
+        <a href="/newpost" class="btn btn-primary mb-3">New post</a>
+    
+
+    <table class="table m-auto">
+        <thead class="thead-light text-center">
+            <tr>
+                <th scope="col">Title</th>
+                <th scope="col">Author</th>
+                <th scope="col">Publish date</th>
+                <th scope="col">Operations</th>
+            </tr>
+        </thead>
+        <tbody class="text-center">
+                {{#each posts}}
+            <tr>
+                <th scope="row" class="align-middle">{{title}}</th>
+                <td class="align-middle">{{author}}</td>
+                <td class="align-middle">{{created_at}}</td>
+                <td><a href="editpost/{{id}}" class="btn btn-outline-success">Edit</a></td>
+            </tr>
+                {{/each}}
+        </tbody>
+    </table>
+</div>

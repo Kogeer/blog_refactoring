@@ -1,13 +1,13 @@
 <link rel="stylesheet" type="text/css" href="/stylesheets/newpost.css">
 
 <div class="container text-center h-100 shadow-lg p-3 mb-3 bg-white rounded">
-<form method="POST" action="/newpost" id="newpostform" onsubmit="inputValidation()">
+<form method="POST" action="/editpost/{{post.id}}" id="editpostform" onsubmit="inputValidation()">
         <label><h4>Title</h4></label><br>
-        <input type="text" name="title" id="title" placeholder="Enter title here..."><br>
+        <input type="text" name="title" id="title" value="{{post.title}}"><br>
         <label><h4 class="mt-2">Slug</h4></label><br>
-        <input type="text" name="slug" id="slug" placeholder="Enter slug here...">
+        <input type="text" name="slug" id="slug" value="{{post.slug}}">
         <div class="mt-4 mb-0"><label><h4>Content</h4></label></div>
-        <textarea name="content" form="newpostform" id="newpostcontent" placeholder="Enter text here..."></textarea><br>
+        <textarea name="content" form="editpostform" id="editpostcontent">{{post.content}}</textarea><br>
         <a href="/admin" class="btn btn-warning" id="publishdiscard">Discard</a>
         <input type="submit" value="Publish" id="publishbutton" class="btn btn-primary">
 </form>
@@ -20,7 +20,7 @@
 
 <script type="text/javascript">
         function inputValidation() {
-                const inputs = document.querySelector('#newpostform');
+                const inputs = document.querySelector('#editpostform');
                 if(!inputs.title.value) {
                         event.preventDefault();
                         const titleAlreadyError = document.getElementById('title-required');

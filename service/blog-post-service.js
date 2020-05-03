@@ -6,9 +6,6 @@ export default class BlogPostService {
         this.blogPostRepository = BlogPostRepository
     }
 
-    /**
-     * return Blog Posts in Array
-     */
     getPosts() {
         return this.blogPostRepository.getAllPosts();
     }
@@ -37,6 +34,12 @@ export default class BlogPostService {
         } catch (e) {
             console.log(e);
         }
+    }
+
+    updatePost(id,user,title,slug,content) {
+        const mockTime = new Date();
+        const post = new BlogPost(+id,user,mockTime,title,slug,content);
+        this.blogPostRepository.updatePost(post);
     }
 }
 
