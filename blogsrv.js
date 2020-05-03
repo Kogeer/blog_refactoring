@@ -40,6 +40,7 @@ app.get('/admin', cookieAuthentication, userLoginController.adminPage.bind(userL
 app.get('/logout', userLoginController.logout.bind(userLoginController));
 app.get('/newpost', cookieAuthentication, blogPostController.newPostPage);
 app.post('/newpost', cookieAuthentication, blogPostController.createNewPost.bind(blogPostController));
+app.get('/posts/:id', blogPostController.readPost.bind(blogPostController));
 
 app.listen(port, () => {
     blogPostRepository.createDatabase();

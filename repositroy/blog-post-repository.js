@@ -34,4 +34,23 @@ export default class BlogPostRepository {
         })
     }
 
+    readPost(id) {
+        return new Promise((resolve,reject) => {
+            db.serialize(function() {
+                db.get("SELECT * FROM posts WHERE id = ?",id,function(err,post) {
+                    if(err) {
+                        reject(err);
+                    }
+
+                    if(post !== undefined) {
+                            const blogPost = new BlogPost(post.id,post.author,post.created_at,post.title,post.content)
+                            resolve(blogPost);
+                    }
+
+                    reject(new Error('No post with id'))
+                })
+            })
+        })
+    }
+
 }

@@ -7,7 +7,6 @@ export default class BlogPostController {
 
     async indexPage(req,res) {
         const postsOnIndex = await this.blogPostService.getPosts();
-        console.log(postsOnIndex);
         res.render('index', {
             blogHeaderTitle : 'KoGe Blog Project',
             posts: postsOnIndex
@@ -43,5 +42,20 @@ export default class BlogPostController {
         this.blogPostService.createNewPost(user,title,content);
         
         res.redirect('admin');
+    }
+
+    async readPost(req,res) {
+        const {id} = req.params;
+        const post = await this.blogPostService.readPost(id);
+
+        if(!post) {
+            res.redirect('/');
+            return;
+        }
+        
+        res.render('readpost', {
+            blogHeaderTitle: 'KoGe Blog Project',
+            post
+        })
     }
 }

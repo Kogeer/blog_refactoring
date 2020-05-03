@@ -20,5 +20,14 @@ export default class BlogPostService {
         this.blogPostRepository.publishNewPost(post)
     }
     
+    async readPost(id) {
+        try {
+            const post = await this.blogPostRepository.readPost(id)
+            return post;
+        }
+        catch(e) {
+            console.log(e)
+        }
+    }
 }
 
