@@ -13,20 +13,29 @@ export default class BlogPostService {
         return this.blogPostRepository.getAllPosts();
     }
 
-    createNewPost(user,title,content) {
+    createNewPost(user, title, slug, content) {
         const mockId = 0;
         const mockTime = new Date();
-        const post = new BlogPost(mockId,user,mockTime,title,content);
-        this.blogPostRepository.publishNewPost(post)
+        const post = new BlogPost(mockId, user, mockTime, title, slug, content);
+        this.blogPostRepository.publishNewPost(post);
     }
-    
+
     async readPost(id) {
-        try {
-            const post = await this.blogPostRepository.readPost(id)
-            return post;
+        if (!isNaN(id)) {
+            try {
+                const post = await this.blogPostRepository.readPostById(id);
+                return post;
+            }
+            catch (e) {
+                console.log(e);
+            }
         }
-        catch(e) {
-            console.log(e)
+
+        try {
+            const post = await this.blogPostRepository.readPostBySlug(id);
+            return post;
+        } catch (e) {
+            console.log(e);
         }
     }
 }
