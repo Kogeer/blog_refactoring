@@ -1,40 +1,37 @@
 import BlogPost from '../domain/blog-post.js'
-
-const posts = [
-    {
-        author: 'admin',
-        title: 'Ducati V4',
-        content: 'The new Ducati is unbeleivable!'
-    },
-    {
-        author: 'admin',
-        title: 'Café racers',
-        content: 'The café racers are the most designed motors!'
-    }
-]
+import sqlite3 from 'sqlite3'
+const db = new sqlite3.Database('blogposts.db');
 
 export default class BlogPostRepository {
-    /**
-     * Return blog posts with domain object
-     */
-    getAllPosts() {
-        const posts = [
-            {
-                author: 'admin',
-                title: 'Ducati V4',
-                content: 'The new Ducati is unbeleivable!'
-            },
-            {
-                author: 'admin',
-                title: 'Café racers',
-                content: 'The café racers are the most designed motors!'
-            }
-        ]
-        
-        const blogPosts = posts.map(post => {
-            return new BlogPost(post.author,post.title,post.content)
+    
+    createDatabase() {
+        db.serialize(function() {
+            db.run("CREATE TABLE IF NOT EXISTS posts (id INTEGER PRIMARY KEY AUTOINCREMENT, author VARCHAR(20), created_at VARCHAR(20), title TEXT, content TEXT)");
         })
-
-        return blogPosts;
     }
+
+    getAllPosts() {
+        return new Promise((resolve,reject) => {
+            db.serialize(function() {
+                db.all("SELECT * FROM posts ORDER BY created_at DESC", function(err,posts) {
+                    if(err) {
+                        reject(err)
+                    }
+                    // console.log(posts);
+                    const thePosts = posts.map(post => {
+                        return new BlogPost(post.id,post.author,post.created_at,post.title,post.content);
+                    })
+                    resolve(thePosts)
+                });
+            })
+        })
+    }
+
+    publishNewPost(post) {
+        db.serialize(function() {
+            db.run("INSERT INTO posts (author,created_at,title,content) VALUES (?,datetime('now','localtime'),?,?)",
+            [post.author,post.title,post.content]);
+        })
+    }
+
 }

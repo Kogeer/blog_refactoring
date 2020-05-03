@@ -1,0 +1,24 @@
+input {
+    background-color: #f2f2f2;
+    border: 0;
+    padding: 5px;
+    width: 35%;
+}
+
+#publishbutton,
+#publishdiscard{
+    width: 100px;
+}
+
+#draftbutton {
+    width: 130px;
+}
+
+textarea {
+    width: 35%;
+    height: 200px;
+    overflow-y: scroll;
+    resize: none;
+    background-color: #f2f2f2;
+    border: 0;
+}

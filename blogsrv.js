@@ -38,5 +38,10 @@ app.get('/login', userLoginController.userLoginPage.bind(userLoginController));
 app.post('/login', userLoginController.loggingIn.bind(userLoginController));
 app.get('/admin', cookieAuthentication, userLoginController.adminPage.bind(userLoginController));
 app.get('/logout', userLoginController.logout.bind(userLoginController));
+app.get('/newpost', cookieAuthentication, blogPostController.newPostPage);
+app.post('/newpost', cookieAuthentication, blogPostController.createNewPost.bind(blogPostController));
 
-app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`));
+app.listen(port, () => {
+    blogPostRepository.createDatabase();
+    console.log(`Example app listening at http://localhost:${port}`);
+});

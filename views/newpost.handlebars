@@ -1,0 +1,54 @@
+<link rel="stylesheet" type="text/css" href="/stylesheets/newpost.css">
+
+<div class="container text-center h-100 shadow-lg p-3 mb-3 bg-white rounded">
+<form method="POST" action="/newpost" id="newpostform" onsubmit="inputValidation()">
+        <label><h4>Title</h4></label><br>
+        <input type="text" name="title" id="title" placeholder="Enter title here..."><br>
+        <div class="mt-4 mb-0"><label><h4>Content</h4></label></div>
+        <textarea name="content" form="newpostform" id="newpostcontent" placeholder="Enter text here..."></textarea><br>
+        <a href="/admin" class="btn btn-warning" id="publishdiscard">Discard</a>
+        <input type="submit" value="Publish" id="publishbutton" class="btn btn-primary">
+</form>
+{{#if error}}
+<h3>{{error.title}}</h3>
+<h3>{{error.content}}</h3>
+{{/if}}
+</div>
+
+<script type="text/javascript">
+        function inputValidation() {
+                const inputs = document.querySelector('#newpostform');
+                if(!inputs.title.value) {
+                        event.preventDefault();
+                        const titleAlreadyError = document.getElementById('title-required');
+                        if(titleAlreadyError) {
+                                return;
+                        }
+                        inputs.title.placeholder = 'Title is required!';
+                        const titleReq = document.createElement("h3");
+                        titleReq.setAttribute("id","title-required");
+                        titleReq.innerText = 'Title is required!';
+                        inputs.append(titleReq);
+                }
+                if(inputs.title.value) {
+                        const titleError = document.getElementById('title-required');
+                        titleError.remove();
+                }
+                if(!inputs.content.value) {
+                        event.preventDefault();
+                        const isAlreadyError = document.getElementById('content-required');
+                        if(isAlreadyError) {
+                                return;
+                        }
+                        inputs.content.placeholder = 'Content is required!';
+                        const contentReq = document.createElement("h3");
+                        contentReq.setAttribute("id","content-required");
+                        contentReq.innerText = 'Content is required!';
+                        inputs.append(contentReq);
+                }
+                if(inputs.content.value) {
+                        const contentError = document.getElementById('content-required');
+                        contentError.remove();
+                }
+        }
+</script>
