@@ -18,3 +18,26 @@ body {
     background-color: #00BCD4;
     display: block;
 }
+
+#archive-container {
+    background-color: rgba(0, 188, 212, 0.4);
+    color: #3498db;
+}
+
+#archive-container a {
+    background-color: #3498db;
+    padding: 1px;
+  color: white;
+  position: relative;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+#archive-container a:hover {
+  cursor: pointer;
+}
+
+#archive-container a:active {
+  box-shadow: none;
+  top: 5px;
+}

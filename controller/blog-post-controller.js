@@ -9,9 +9,12 @@ export default class BlogPostController {
 
     async indexPage(req, res) {
         const postsOnIndex = await this.blogPostService.getPublishedPosts();
+        const archive = await this.blogPostService.archivedPosts();
+        console.log(archive);
         res.render('index', {
             blogHeaderTitle: 'KoGe Blog Project',
-            posts: postsOnIndex
+            posts: postsOnIndex,
+            archive
         })
     }
 

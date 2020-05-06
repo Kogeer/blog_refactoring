@@ -10,6 +10,7 @@ import UserService from './service/user-service.js';
 import SessionService from './service/session-service.js';
 import PostInputsValidation from './utils/post-inputs-validation.js';
 import cookieParser from 'cookie-parser';
+import ArchiveObjectGenerator from './utils/archive-object-generator.js';
 
 const app = express();
 const port = 3000;
@@ -27,7 +28,8 @@ app.use(cookieParser());
 
 const blogPostRepository = new BlogPostRepository();
 const postInputsValidation = new PostInputsValidation();
-const blogPostService = new BlogPostService(blogPostRepository);
+const archiveObjectGenerator = new ArchiveObjectGenerator();
+const blogPostService = new BlogPostService(blogPostRepository,archiveObjectGenerator);
 const blogPostController = new BlogPostController(blogPostService,postInputsValidation);
 const userService = new UserService();
 const sessionService = new SessionService();

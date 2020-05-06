@@ -2,8 +2,9 @@ import BlogPostRepository from '../repositroy/blog-post-repository.js'
 import BlogPost from '../domain/blog-post.js'
 
 export default class BlogPostService {
-    constructor(BlogPostRepository) {
-        this.blogPostRepository = BlogPostRepository
+    constructor(BlogPostRepository,archiveObjectGenerator) {
+        this.blogPostRepository = BlogPostRepository;
+        this.archiveObjectGenerator = archiveObjectGenerator;
     }
 
     getPublishedPosts() {
@@ -81,6 +82,12 @@ export default class BlogPostService {
         const isPublished = 0;
         const post = new BlogPost(mockId, user, noTime, title, slug, content, isPublished);
         this.blogPostRepository.addNewDraft(post);
+    }
+
+    async archivedPosts() {
+        const posts = await this.blogPostRepository.archivedPosts();
+        const archiv = this.archiveObjectGenerator.generateArchive(posts);
+        return archiv;
     }
 }
 
