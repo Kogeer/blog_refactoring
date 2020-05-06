@@ -8,7 +8,8 @@ import BlogPostRepository from './repositroy/blog-post-repository.js';
 import UserLoginController from './controller/user-login-controller.js';
 import UserService from './service/user-service.js';
 import SessionService from './service/session-service.js';
-import cookieParser from 'cookie-parser'
+import PostInputsValidation from './utils/post-inputs-validation.js';
+import cookieParser from 'cookie-parser';
 
 const app = express();
 const port = 3000;
@@ -25,8 +26,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 const blogPostRepository = new BlogPostRepository();
+const postInputsValidation = new PostInputsValidation();
 const blogPostService = new BlogPostService(blogPostRepository);
-const blogPostController = new BlogPostController(blogPostService);
+const blogPostController = new BlogPostController(blogPostService,postInputsValidation);
 const userService = new UserService();
 const sessionService = new SessionService();
 const userLoginController = new UserLoginController(userService,sessionService);
@@ -44,6 +46,7 @@ app.get('/posts/:id', blogPostController.readPost.bind(blogPostController));
 app.get('/admin-posts-list', cookieAuthentication, blogPostController.adminPostsList.bind(blogPostController));
 app.get('/editpost/:id', cookieAuthentication, blogPostController.getEditPost.bind(blogPostController));
 app.post('/editpost/:id', cookieAuthentication, blogPostController.updatePost.bind(blogPostController));
+app.post('/savedraft', cookieAuthentication, blogPostController.createDraftPost.bind(blogPostController));
 
 app.listen(port, () => {
     blogPostRepository.createDatabase();

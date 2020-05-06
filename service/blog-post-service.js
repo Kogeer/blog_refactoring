@@ -6,14 +6,19 @@ export default class BlogPostService {
         this.blogPostRepository = BlogPostRepository
     }
 
-    getPosts() {
+    getPublishedPosts() {
+        return this.blogPostRepository.getAllPublishedPosts();
+    }
+
+    getAllPosts() {
         return this.blogPostRepository.getAllPosts();
     }
 
     createNewPost(user, title, slug, content) {
         const mockId = 0;
         const mockTime = new Date();
-        const post = new BlogPost(mockId, user, mockTime, title, slug, content);
+        const isPublished = 1;
+        const post = new BlogPost(mockId, user, mockTime, title, slug, content, isPublished);
         this.blogPostRepository.publishNewPost(post);
     }
 
@@ -25,6 +30,7 @@ export default class BlogPostService {
             }
             catch (e) {
                 console.log(e);
+                return;
             }
         }
 
@@ -36,10 +42,45 @@ export default class BlogPostService {
         }
     }
 
-    updatePost(id,user,title,slug,content) {
+    async getEditPost(id) {
+        try {
+            const post = await this.blogPostRepository.getEditPost(id);
+            return post;
+        }
+        catch (e) {
+            console.log(e);
+        }
+    }
+
+    async updatePost(id,user,title,slug,content,update) {
+        const postIsPublished = await this.blogPostRepository.postIsPublished(id);
+        if(update === 'draft') {
+            const draftTime = 'N/A';
+            const isPublished = 0;
+            const post = new BlogPost(+id,user,draftTime,title,slug,content,isPublished);
+            this.blogPostRepository.updateDraftPost(post);
+            return;
+        }
+
+        if(postIsPublished.isPublished) {
+            const isPublished = 1;
+            const post = new BlogPost(+id,user,postIsPublished.created_at,title,slug,content,isPublished)
+            this.blogPostRepository.updatePublishedPost(post)
+            return;
+        }
+
         const mockTime = new Date();
-        const post = new BlogPost(+id,user,mockTime,title,slug,content);
-        this.blogPostRepository.updatePost(post);
+        const isPub = 1;
+        const post = new BlogPost(+id,user,mockTime,title,slug,content,isPub);
+        this.blogPostRepository.updateToPublishPost(post);
+    }
+
+    createDraftPost(user,title,slug,content) {
+        const mockId = 0;
+        const noTime = 'N/A';
+        const isPublished = 0;
+        const post = new BlogPost(mockId, user, noTime, title, slug, content, isPublished);
+        this.blogPostRepository.addNewDraft(post);
     }
 }
 

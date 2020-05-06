@@ -1,12 +1,14 @@
 import BlogPostService from '../service/blog-post-service.js'
+import PostInputsValidation from '../utils/post-inputs-validation.js'
 
 export default class BlogPostController {
-    constructor(blogPostService) {
-        this.blogPostService = blogPostService
+    constructor(blogPostService,postInputsValidation) {
+        this.blogPostService = blogPostService;
+        this.postInputsValidation = postInputsValidation
     }
 
     async indexPage(req, res) {
-        const postsOnIndex = await this.blogPostService.getPosts();
+        const postsOnIndex = await this.blogPostService.getPublishedPosts();
         res.render('index', {
             blogHeaderTitle: 'KoGe Blog Project',
             posts: postsOnIndex
@@ -22,22 +24,9 @@ export default class BlogPostController {
     createNewPost(req, res) {
         const { title, slug, content } = req.body;
         const { user } = req.session;
-        const missInputs = {};
         const validSlug = slug.split(' ').join('-');
-
-        if (!title) {
-            missInputs.title = 'Title is required'
-        }
-        if (!content) {
-            missInputs.content = 'Content is required'
-        }
-        if (!slug) {
-            missInputs.slug = 'Slug is required'
-        }
-        if (validSlug && !validSlug.match(/^[0-9a-z.\-]+$/)) {
-            console.log('Rossz is')
-            missInputs.slug = 'Invalid slug, only alphanumeric characters without accents!'
-        }
+        console.log(validSlug);
+        const missInputs = this.postInputsValidation.inputsValidation(title,slug,content,validSlug);
 
         if (Object.keys(missInputs).length) {
             res.render('newpost', {
@@ -68,7 +57,7 @@ export default class BlogPostController {
     }
 
     async adminPostsList(req,res) {
-        const postsOnAdmin = await this.blogPostService.getPosts();
+        const postsOnAdmin = await this.blogPostService.getAllPosts();
         res.render('adminpostslist', {
             blogHeaderTitle: 'KoGe Blog Project',
             posts: postsOnAdmin
@@ -77,7 +66,7 @@ export default class BlogPostController {
 
     async getEditPost(req,res) {
         const {id} = req.params;
-        const post = await this.blogPostService.readPost(id);
+        const post = await this.blogPostService.getEditPost(id);
         if(!post) {
             res.redirect('/');
             return;
@@ -92,22 +81,10 @@ export default class BlogPostController {
     async updatePost(req,res) {
         const { title, slug, content } = req.body;
         const {id} = req.params;
+        const { update } = req.query;
         const { user } = req.session;
-        const missInputs = {};
         const validSlug = slug.replace(/\s/, '-')
-
-        if (!title) {
-            missInputs.title = 'Title is required'
-        }
-        if (!content) {
-            missInputs.content = 'Content is required'
-        }
-        if (!slug) {
-            missInputs.slug = 'Slug is required'
-        }
-        if (validSlug && !validSlug.match(/^[0-9a-z.\-]+$/)) {
-            missInputs.slug = 'Invalid slug, only alphanumeric characters without accents!'
-        }
+        const missInputs = this.postInputsValidation.inputsValidation(title,slug,content,validSlug);
 
         if (Object.keys(missInputs).length) {
             res.render('editpost', {
@@ -117,7 +94,26 @@ export default class BlogPostController {
             return;
         }
 
-        this.blogPostService.updatePost(id, user, title, validSlug, content);
+        this.blogPostService.updatePost(id, user, title, validSlug, content, update);
+
+        res.redirect('/admin');
+    }
+
+    createDraftPost(req,res) {
+        const { title, slug, content } = req.body;
+        const { user } = req.session;
+        const validSlug = slug.split(' ').join('-');
+        const missInputs = this.postInputsValidation.inputsValidation(title,slug,content,validSlug);
+
+        if (Object.keys(missInputs).length) {
+            res.render('newpost', {
+                blogHeaderTitle: 'KoGe Blog Project',
+                error: missInputs
+            })
+            return;
+        }
+
+        this.blogPostService.createDraftPost(user, title, validSlug, content);
 
         res.redirect('/admin');
     }

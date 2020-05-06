@@ -9,6 +9,7 @@
         <div class="mt-4 mb-0"><label><h4>Content</h4></label></div>
         <textarea name="content" form="editpostform" id="editpostcontent">{{post.content}}</textarea><br>
         <a href="/admin" class="btn btn-warning" id="publishdiscard">Discard</a>
+        <input type="submit" value="Save as draft" id="draftbutton" class="btn btn-primary" formaction="/editpost/{{post.id}}?update=draft">
         <input type="submit" value="Publish" id="publishbutton" class="btn btn-primary">
 </form>
 {{#if error}}
