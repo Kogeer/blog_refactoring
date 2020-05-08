@@ -49,6 +49,7 @@ app.get('/admin-posts-list', cookieAuthentication, blogPostController.adminPosts
 app.get('/editpost/:id', cookieAuthentication, blogPostController.getEditPost.bind(blogPostController));
 app.post('/editpost/:id', cookieAuthentication, blogPostController.updatePost.bind(blogPostController));
 app.post('/savedraft', cookieAuthentication, blogPostController.createDraftPost.bind(blogPostController));
+app.post('/search', blogPostController.searchPostContent.bind(blogPostController));
 
 app.listen(port, () => {
     blogPostRepository.createDatabase();

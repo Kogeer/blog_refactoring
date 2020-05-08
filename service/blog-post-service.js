@@ -89,5 +89,10 @@ export default class BlogPostService {
         const archiv = this.archiveObjectGenerator.generateArchive(posts);
         return archiv;
     }
+
+    async searchPostContent(content) {
+        const searchedPosts = await this.blogPostRepository.searchPostContent(content);
+        return searchedPosts;
+    }
 }
 

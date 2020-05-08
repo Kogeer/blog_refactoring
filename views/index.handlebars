@@ -10,3 +10,15 @@
 </div>
 {{/each}}
 </div>
+
+{{#if noPosts}}
+<div class="container">
+<div class="container border w-50 shadow-lg p-3 bg-white rounded ">
+
+    <div class="pl-3 pr-3 text-center">
+        <h3 class="mb-0">{{noPosts.title}}</h3>
+    </div>
+    
+</div>
+</div>
+{{/if}}

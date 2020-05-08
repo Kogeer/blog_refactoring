@@ -17,11 +17,11 @@ export default class BlogPostRepository {
                     if (err) {
                         reject(err)
                     }
-                    // console.log(posts);
-                    const thePosts = posts.map(post => {
-                        return new BlogPost(post.id, post.author, post.created_at, post.title, post.slug, post.content);
+
+                    const indexPosts = posts.map(post => {
+                        return new BlogPost(post.id, post.author, post.created_at, post.title, post.slug, post.content, post.isPublished);
                     })
-                    resolve(thePosts)
+                    resolve(indexPosts)
                 });
             })
         })
@@ -36,7 +36,7 @@ export default class BlogPostRepository {
                     }
 
                     const thePosts = posts.map(post => {
-                        return new BlogPost(post.id, post.author, post.created_at, post.title, post.slug, post.content);
+                        return new BlogPost(post.id, post.author, post.created_at, post.title, post.slug, post.content, post.isPublished);
                     })
                     resolve(thePosts);
                 })
@@ -143,7 +143,6 @@ export default class BlogPostRepository {
                     if(err) {
                         resolve(err)
                     }
-                    console.log(isPublished);
                     resolve(isPublished);
                 })
             })
@@ -158,6 +157,23 @@ export default class BlogPostRepository {
                         reject(err);
                     }
                     resolve(posts)
+                })
+            })
+        })
+    }
+
+    searchPostContent(content) {
+        return new Promise((resolve,reject) => {
+            db.serialize(function() {
+                db.all(`SELECT * FROM posts WHERE title LIKE "%${content}%" OR content LIKE "%${content}%" ORDER BY created_at DESC`,function(err,posts) {
+                    if(err) {
+                        reject(err);
+                    }
+
+                    const searchedPosts = posts.map(post => {
+                        return new BlogPost(post.id, post.author, post.created_at, post.title, post.slug, post.content, post.isPublished);
+                    })
+                    resolve(searchedPosts);
                 })
             })
         })

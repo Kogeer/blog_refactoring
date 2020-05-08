@@ -8,7 +8,6 @@ export default class ArchiveObjectGenerator {
             posts[i].year = posts[i].created_at.getFullYear();
             posts[i].month = posts[i].created_at.getMonth()+1;
         }
-        console.log(posts);
 
         for(let i = 0; i < posts.length; i++) {
             if (!archiv.hasOwnProperty(posts[i].year)) {
@@ -22,7 +21,7 @@ export default class ArchiveObjectGenerator {
 				title: posts[i].title
 			});
         }
-        console.log(archiv)
+        
         return archiv;
     }
 }

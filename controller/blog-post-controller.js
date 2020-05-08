@@ -10,7 +10,6 @@ export default class BlogPostController {
     async indexPage(req, res) {
         const postsOnIndex = await this.blogPostService.getPublishedPosts();
         const archive = await this.blogPostService.archivedPosts();
-        console.log(archive);
         res.render('index', {
             blogHeaderTitle: 'KoGe Blog Project',
             posts: postsOnIndex,
@@ -28,7 +27,6 @@ export default class BlogPostController {
         const { title, slug, content } = req.body;
         const { user } = req.session;
         const validSlug = slug.split(' ').join('-');
-        console.log(validSlug);
         const missInputs = this.postInputsValidation.inputsValidation(title,slug,content,validSlug);
 
         if (Object.keys(missInputs).length) {
@@ -119,5 +117,18 @@ export default class BlogPostController {
         this.blogPostService.createDraftPost(user, title, validSlug, content);
 
         res.redirect('/admin');
+    }
+
+    async searchPostContent(req,res) {
+        const { content } = req.body;
+        const searchedPosts = await this.blogPostService.searchPostContent(content);
+        const noPosts = !searchedPosts.length ? {title: 'Post(s) not found!'} : undefined
+        const archive = await this.blogPostService.archivedPosts();
+        res.render('index', {
+            blogHeaderTitle: 'KoGe Blog Project',
+            posts: searchedPosts,
+            noPosts: noPosts,
+            archive
+        })
     }
 }

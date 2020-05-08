@@ -30,9 +30,7 @@ body {
 }
 
 #archive-container a {
-    /* background-color: #3498db; */
     padding: 1px;
-  /* color: white; */
   position: relative;
   text-decoration: none;
   text-transform: uppercase;
@@ -50,7 +48,5 @@ body {
 
 /* scrollbar handle */
 #archive-container::-webkit-scrollbar-thumb {
-  /* border-radius: 1rem; */
-  /* background-color: #00d2ff; */
   background-image: linear-gradient(to top, #00d2ff 0%, #3a7bd5 100%);
 }
