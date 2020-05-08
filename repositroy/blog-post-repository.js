@@ -153,7 +153,7 @@ export default class BlogPostRepository {
     archivedPosts() {
         return new Promise((resolve,reject) => {
             db.serialize(function() {
-                db.all("SELECT id,title,created_at FROM posts WHERE isPublished = 1", function(err,posts) {
+                db.all("SELECT id,title,created_at FROM posts WHERE isPublished = 1 ORDER BY created_at DESC", function(err,posts) {
                     if(err) {
                         reject(err);
                     }
