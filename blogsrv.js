@@ -11,6 +11,8 @@ import SessionService from './service/session-service.js';
 import PostInputsValidation from './utils/post-inputs-validation.js';
 import cookieParser from 'cookie-parser';
 import ArchiveObjectGenerator from './utils/archive-object-generator.js';
+import DbController from './controller/db-controller.js';
+import DbConnectService from './service/db-connect-service.js';
 
 const app = express();
 const port = 3000;
@@ -30,7 +32,9 @@ const blogPostRepository = new BlogPostRepository();
 const postInputsValidation = new PostInputsValidation();
 const archiveObjectGenerator = new ArchiveObjectGenerator();
 const blogPostService = new BlogPostService(blogPostRepository,archiveObjectGenerator);
+const dbConnectService = new DbConnectService(blogPostRepository);
 const blogPostController = new BlogPostController(blogPostService,postInputsValidation);
+const dbController = new DbController(dbConnectService);
 const userService = new UserService();
 const sessionService = new SessionService();
 const userLoginController = new UserLoginController(userService,sessionService);
@@ -50,6 +54,8 @@ app.get('/editpost/:id', cookieAuthentication, blogPostController.getEditPost.bi
 app.post('/editpost/:id', cookieAuthentication, blogPostController.updatePost.bind(blogPostController));
 app.post('/savedraft', cookieAuthentication, blogPostController.createDraftPost.bind(blogPostController));
 app.post('/search', blogPostController.searchPostContent.bind(blogPostController));
+app.get('/dbpath', cookieAuthentication, dbController.getChangePath.bind(dbController));
+app.post('/dbpath', cookieAuthentication, dbController.changePath.bind(dbController));
 
 app.listen(port, () => {
     blogPostRepository.createDatabase();

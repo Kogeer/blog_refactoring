@@ -1,0 +1,16 @@
+<div class="container text-center h-100 shadow-lg p-3 mb-3 bg-white rounded">
+<form method="POST" action="/dbpath" id="newpostform" onsubmit="browserValidation">
+        <label><h4>Please provide a database name</h4></label><br>
+        <input type="text" name="name" id="title" placeholder="Enter path here..." required><br>
+
+        <a href="/admin" class="btn btn-warning mt-3" id="publishdiscard">Discard</a>
+        <input type="submit" value="Connect" id="publishbutton" class="btn btn-primary mt-3">
+</form>
+
+{{#if error}}
+<h2>Invalid Path!</h2>
+{{/if}}
+</div>
+
+
+<link rel="stylesheet" type="text/css" href="/stylesheets/newpost.css">

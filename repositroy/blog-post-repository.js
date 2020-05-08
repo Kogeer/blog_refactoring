@@ -1,8 +1,13 @@
 import BlogPost from '../domain/blog-post.js'
 import sqlite3 from 'sqlite3'
-const db = new sqlite3.Database('blogposts.db');
+import fs from 'fs'
+let dbpath = '';
+let db = new sqlite3.Database(dbpath);
 
 export default class BlogPostRepository {
+    constructor(dbConnectService) {
+        this.dbConnectService = dbConnectService;
+    }
 
     createDatabase() {
         db.serialize(function () {
@@ -177,5 +182,15 @@ export default class BlogPostRepository {
                 })
             })
         })
+    }
+
+    changePathName(name) {
+        if(fs.existsSync(name)) {
+            db.close();
+            dbpath = `./${name}`;
+            db = new sqlite3.Database(name);
+            return true;
+        }
+        return false;
     }
 }
